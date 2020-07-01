@@ -55,27 +55,18 @@
 
 <p>​                                 <img src="https://i.loli.net/2020/06/21/W8IDiCPv2smthu1.png" alt="1.png" style="zoom:50%;" />                   <img src="https://i.loli.net/2020/06/21/YnchW3BCASTeaj5.png" alt="2.png" style="zoom:50%;" /></p>
 <p>画出图像后可用一条直线来近似，再估算出该直线斜率大约为0.5于是假设该比例模型为：</p>
-<center>△p<sub>n</sub> = p<sub>n+1</sub> - p<sub>n</sub> = 0.5 p<sub>n</sub> </center>
-
-<p>那么预测为 p<sub>n+1</sub> = 1.5p<sub>n</sub> ，说明预测模型总群量总是增长，这是存在问题的。</p>
+<p>$$<br>△p_n=p_{n+1}-p_n=0.5p_n<br>$$<br>那么预测为 p<sub>n+1</sub> = 1.5p<sub>n</sub> ，说明预测模型总群量总是增长，这是存在问题的。</p>
 <p>对出生、死亡和资源的建模，如果在一个周期里出生死亡都和种群量成正比，那么说明种群的变化应该和总群量成正比。但是，某些资源只能支持某个最大限度的种群量，而不能支持无限增长的种群量，那么增长就会慢下来                        </p>
 <p> <img src="https://i.loli.net/2020/06/22/pacoxBnm5su93Ed.png" alt="3.png" style="zoom:80%;" /><img src="https://i.loli.net/2020/06/22/aLH1trXZ583mvgl.png" alt="4.png" style="zoom: 67%;" /></p>
 <p>据图估计容纳量在665左右，当p<sub>n</sub>趋近665时，变化确切减慢了。因为当p<sub>n</sub>趋近665时，665-p<sub>n</sub>更小，所以建议用以下模型：</p>
-<center>△p<sub>n</sub> =  p<sub>n-1</sub> -  p<sub>n</sub>  =k (665 - p<sub>n</sub>) p<sub>n</sub> </center>
-
-
-<p>当p<sub>n</sub> 接近665时，变化△p<sub>n</sub> 变得越来越小。</p>
+<p>$$<br>△p_n=p_{n-1}-p_n=k(665-p_n)p_n<br>$$<br>当p<sub>n</sub> 接近665时，变化△p<sub>n</sub> 变得越来越小。</p>
 <p>在数学上，说明变化△p<sub>n</sub> 和乘积（665-p<sub>n</sub>）p<sub>n</sub>  成比例。</p>
 <p>为测试模型画出p<sub>n-1</sub> -  p<sub>n</sub>  对 (665 - p<sub>n</sub>) p<sub>n</sub> 的图形，看看是否存在合理的比例性，然后估算合理的比例常数k。</p>
 <p><img src="https://i.loli.net/2020/06/22/cObs9iXGWS2qHkZ.png" alt="5.png" style="zoom:87%;" /><img src="https://i.loli.net/2020/06/22/s8jQMtYFlIDOLZf.png" alt="6.png" style="zoom: 67%;" /></p>
 <p>由图像可看到p<sub>n-1</sub> -  p<sub>n</sub>  对 (665 - p<sub>n</sub>) p<sub>n</sub> 的图形确实合理近似于过原点的一条直线，我们估计近似表示这条直线的斜率越为 k≈0.00082,于是给出模型：</p>
-<center> p<sub>n+1</sub>  -  p<sub>n</sub> =  0.00082 (665 -p<sub>n</sub>) p<sub>n</sub></center>
-
-
+<p>$$<br>p_{n+1}-p_n=0.00082(662-p_n)p_n<br>$$</p>
 <p>数值求解模型：由上式得到</p>
-<center> p<sub>n+1</sub>=  p<sub>n</sub>  +   0.00082 (665 -p<sub>n</sub>) p<sub>n</sub></center>
-
-
+<p>$$<br>p_{n+1}=p_n+0.00082(665-p_n)p_n<br>$$</p>
 <p>该方程右边是关于 p<sub>n</sub> 是二次的。这种动力系统是非线性的，而且一般不能求得解析解。也就是说，通常不能用n来表示 p<sub>n</sub>的公式解。但是如果代入 p<sub>0</sub>=9.6，可以代入表达式求得 p<sub>1</sub>：</p>
 <center> p<sub>1</sub>=  p<sub>0</sub>  +   0.00082 (665 -p<sub>0</sub>) p<sub>0</sub>=9.6+0.00082(665-9.6)9.6=14.76</center>
 
@@ -91,8 +82,7 @@
 <p>地高辛用于治疗心脏病，处方计量应该要保持血液中地高辛浓度高于一个有效水平值而又不能超过安全水平值。</p>
 <p>对于血液中初始计量为0.5毫克的情形，下表展示该特定病人n天后其血液中地高辛的剩余量a<sub>n</sub>,以及每天的变化△a<sub>n</sub>.</p>
 <p><img src="https://s1.ax1x.com/2020/06/28/NRBeG4.png" alt=""></p>
-<img src="https://s1.ax1x.com/2020/06/28/NRBQqx.png" alt="NRBQqx.png" style="zoom:67%;" />
-
+<p><img src="https://s1.ax1x.com/2020/06/28/NRBQqx.png" alt=""></p>
 <p>图片展现了在一个时段里地高辛的变化含量△a<sub>n</sub>和该时段开始血流中地高辛的含量a<sub>n</sub>大致成比例。</p>
 <p>通过原点比例直线的斜率k≈-0.107/0.345≈-0.310。</p>
 <p>模型<br>$$<br>△a_{n}=-0.31a_{n}<br>$$</p>
