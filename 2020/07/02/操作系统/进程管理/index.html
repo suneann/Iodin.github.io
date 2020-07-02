@@ -1,0 +1,772 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>进程管理 | Mr.Iodin</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 4.2.1"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">进程管理</h1><a id="logo" href="/.">Mr.Iodin</a><p class="description">坠落苹果的两面：极端智慧与极致想象.</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">进程管理</h1><div class="post-meta">2020-07-02</div><a class="disqus-comment-count" href="/2020/07/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/#vcomment"><span class="valine-comment-count" data-xid="/2020/07/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/"></span><span> 条评论</span></a><div class="post-content"><h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><h3 id="顺序程序"><a href="#顺序程序" class="headerlink" title="顺序程序"></a>顺序程序</h3><p>把一个具有独立功能的程序独占处理机直至最终结束称为顺序执行。</p>
+<p><strong>顺序性：</strong>指令按照严格的顺序执行。</p>
+<p><strong>封闭性：</strong>最终结果由初始条件决定，独占系统资源，不受外界影响。</p>
+<p><strong>可再现性：</strong>初始条件相同，重复执行的结果相同（与执行速度无关）。</p>
+<h3 id="并发程序"><a href="#并发程序" class="headerlink" title="并发程序"></a>并发程序</h3><p><strong>并发的目的：</strong>增强处理能力，提高资源利用率。</p>
+<p><strong>含义：</strong>在时间段内有多个程序处于并行且未完成结束的状态。</p>
+<p><strong>间断（异步）性：</strong>并发程序间存在制约，程序“走走停停”</p>
+<p><strong>失去封闭性：</strong>共享资源，被其他程序影响。（程序写到共享寄存器中的数据可能会被另外一个程序修改）</p>
+<p><strong>不可再现性：</strong>失去封闭性→不可再现性。</p>
+<p><strong>并发程序执行条件：</strong></p>
+<ul>
+<li><p>程序P（i）针对共享变量的读集R（i）、写集W（i）</p>
+</li>
+<li><p>条件：任意两个程序P（i）和P（j）</p>
+<ul>
+<li>R（i）∩  W（j）= Ø</li>
+<li>W（i）∩  R（j）=Ø</li>
+</ul>
+<p>/<em>保证两次读之间数据不发生变化\</em>/</p>
+<ul>
+<li>W（i）∩  W（j）= Ø</li>
+</ul>
+<p>/<em>保证写的结果不丢失\</em>/</p>
+</li>
+<li><p>但是，一般情况下上述判断条件是很难检查的，程序的读集和写集一般很难整理出来。</p>
+</li>
+</ul>
+<p><strong>并发程序问题：</strong></p>
+<ul>
+<li>为了提高资源利用率，引入多道并发。</li>
+<li>并发引起对资源的共享，共享带来资源竞争。</li>
+<li>不加控制的并发会出现不希望的错误（失去封闭性、可再现性）</li>
+</ul>
+<p><strong>进程的引入：</strong></p>
+<ul>
+<li>控制和协调程序段执行过程中对资源的共享和竞争。</li>
+<li>必须有一个描述执行过程和共享资源的基本单位。</li>
+<li>所以进程就是：<strong>程序在执行过程中分配和管理资源的基本单位</strong>。</li>
+</ul>
+<p><strong>进程的基本特征：</strong></p>
+<ul>
+<li>并发性。宏观上并行，微观上串行。</li>
+<li>动态性。进程是动态地执行过程，动态产生和消亡，状态变换。</li>
+<li>独立性。每一个进程都是一个相对完整的资源分配单位。</li>
+<li>交互性。进程和进程之间存在相互通信、制约。</li>
+<li>异步性。各进程按照独立的、不可预知的速度推进。</li>
+</ul>
+<p><strong>进程和程序之间区别：</strong></p>
+<ul>
+<li>程序是静态的，进程是动态的，强调执行过程。</li>
+<li>进程具有并行特征，执行是独立的，速度是异步的。程序不反映执行过程，不具有并行特征。</li>
+<li>进程是竞争系统资源的基本单位。</li>
+<li>不同进程可以包含同一个程序（如同时打开多个浏览器），只要对应数据集不同。</li>
+</ul>
+<p><strong>进程的描述：</strong></p>
+<p>进程的静态描述包含三部分：</p>
+<ul>
+<li>进程控制块PCB：系统感知进程存在的唯一实体（一一对应）。</li>
+<li>程序段：进程需要完成的功能。</li>
+<li>数据集：程序执行对象。</li>
+</ul>
+<p><strong>进程控制块：</strong></p>
+<ul>
+<li><p>系统为了管理进程设置的一个专门的数据结构，用它来记录进程的外部特征，描述进程的运动变化过程。</p>
+</li>
+<li><p>系统利用PCB来控制和管理进程，所以PCB是系统感知进程存在的唯一标志。</p>
+</li>
+<li><p>进程与PCB是一一对应。</p>
+</li>
+</ul>
+<p>进程描述信息：</p>
+<ul>
+<li>进程标识符（process ID），唯一，通常是整数；</li>
+<li>进程名，通常基于可执行文件名（不唯一）；</li>
+<li>用户标识符（user ID）；进程组关系（process group）；</li>
+</ul>
+<p>进程控制信息：</p>
+<ul>
+<li>当前状态；</li>
+<li>优先级（priority);</li>
+<li>代码执行入口地址；</li>
+<li>程序外存地址；</li>
+<li>运行统计信息（执行时间，页面调度）；</li>
+<li>进程间同步通信；</li>
+</ul>
+<p>资源占用信息：</p>
+<ul>
+<li>虚拟地址空间现状；</li>
+<li>打开文件列表；</li>
+</ul>
+<p>CPU现场保护结构</p>
+<h3 id="进程状态及转换"><a href="#进程状态及转换" class="headerlink" title="进程状态及转换"></a>进程状态及转换</h3><p><strong>1.两状态进程模型</strong></p>
+<p><img src="https://i.loli.net/2020/05/30/f1Z3YsiFTg5mIo9.png" alt="4.4进程状态的转换.png"></p>
+<p><strong>2.三状态进程模型</strong></p>
+<ul>
+<li><strong>运行态</strong>（Running）：进程占有CPU，并在CPU上运行。</li>
+<li><strong>就绪态</strong>（Ready）：一个进程已经具备运行条件，但由于无CPU暂时不能运行的状态。</li>
+<li><strong>等待态</strong>（Waiting/Blocked）：指进程因等待某件事情的发生而暂时不能运行的状态（即使CPU空闲该进程也不能运行）</li>
+</ul>
+<img src="https://i.loli.net/2020/05/30/CfSKowDvHqT5Xer.png" alt="4.4三状态模型.png" style="zoom: 80%;" />
+
+<p>-I/O（-Event）：在运行过程中，有时候需要执行某些I/O，或者等待某种特定的事件发生，这时候不能回到就绪状态（因为并不是一个万事具备的情况），需要等待一个特定的事件，所以要放到堵塞状态。</p>
+<p>+I/O（+Event）：当对应的事件发生以后，再回到就绪状态。</p>
+<p>-CPU：从运行状态转变为就绪状态，常见的通常有两种情况。</p>
+<p>一、时间变道。在分时操作系统中，分给你的进程时间片用完了，这时候调度程序不会让你继续运行，但你依然处于一个具备所有运行条件的状态，回到Ready态。</p>
+<p>二、被高优先进程抢占。在基于优先级的调度算法中，有一些进程会比正在运行的进程优先级高，这时抢占之后低优先级进程也不是等待某一个特定的时间，而是具备运行条件，从而回到就绪态。</p>
+<p><strong>3.五状态进程模型</strong></p>
+<p><img src="https://i.loli.net/2020/05/30/JGwEBF9mpZDUNeL.png" alt="4.4 五状态模型.png"></p>
+<p>比三状态进程多两个状态：</p>
+<p>新建状态（New）：当程序要运行时计算机要为其做些前期的准备工作。（比如创建进程、分配内存）</p>
+<p>退出状态（Exit）：做一些善后处理工作，比如释放内存、销毁进程结构。</p>
+<p>Admit:当新建一个状态时，所有准备工作准备就绪了，就进入就绪状态。</p>
+<p>Release：当最后一条指令也运行完成才能退出，从运行态到退出状态。</p>
+<p><strong>4.七状态进程模型</strong></p>
+<p><img src="https://i.loli.net/2020/05/30/eF4ZJo5kYjNGzcq.png" alt="4.4 七状态图.png"></p>
+<p>在五状态图基础上添加两个状态。</p>
+<p>Suspend：在操作系统中表示挂起。代表当前进程可能由于优先级不够内存不足的原因，已经从内存中交换出来了。</p>
+<p>RAM：增加和减少的内存空间。</p>
+<p>【Q&amp;A】</p>
+<p>系统中有N个进程：</p>
+<p>（1）运行进程最多有几个？最少有几个？</p>
+<p>（2）就绪状态最多有几个？最少有几个？</p>
+<p>（3）等待进程最多有几个？最少有几个？</p>
+<p>1.单核CPU，运行状态最多有1个，最少有0个，此时就绪状态也一样是0个，处于阻塞状态的进程就有0个。</p>
+<p>2.就绪状态不能为N个，因为会马上进入运行状态。所以就绪状态的进程最多是N-1个，最少是0个。</p>
+<p>3.等待（阻塞）状态的进程最多可以为N个，最少也可以是0个。</p>
+<p>【习题】</p>
+<p>【1】当<strong><strong><strong><strong>__</strong></strong></strong></strong>时，进程从执行状态转变为就绪状态。</p>
+<p>A.进程被调度程序选中    //从就绪态到执行状态</p>
+<p>B.时间片到    //√</p>
+<p>C.等待某一事件    //从运行状态到阻塞状态</p>
+<p>D.等待的事件发生    //从阻塞状态到就绪状态</p>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><p><strong>进程有两个基本属性：</strong></p>
+<ul>
+<li>资源的拥有者：给每一个进程分配一个虚拟的进程空间，保存进程映像，控制一些资源（文件、I/O设备），有状态优先级、调度。</li>
+<li>调度的基本单位：进程是一个执行轨迹。</li>
+</ul>
+<p>以上两个属性构成进程并发执行的基础。</p>
+<p><strong>线程的引入：</strong></p>
+<p>系统必须完成的操作：创建进程、撤销进程、进程切换。</p>
+<p>缺点：时间空间开销大，限制并发的提高。</p>
+<p><strong>线程：</strong>有时称轻量级进程。</p>
+<ul>
+<li>进程中的一个运行实体</li>
+<li>是一个CPU调度单位</li>
+</ul>
+<p>资源的拥有者还是进程或称任务。</p>
+<p>将原来进程的两个属性分开处理。</p>
+<p><strong>进程与线程的关系：</strong></p>
+<p><img src="https://i.loli.net/2020/05/30/oKOaRg7eL1tlIn8.png" alt="4.5进程与线程的关系.png"></p>
+<p><strong>进程：</strong>资源分配单位（存储器、文件）和CPU调度（分派）单位。又称“任务”。</p>
+<p><strong>线程：</strong>作为CPU调度单位，而进程作为其他资源分配单位。一个进程内基本调度单位。（轻权进程）</p>
+<ul>
+<li>只拥有必不可少的资源。如：线程状态，寄存器上下和栈。</li>
+<li>同样具有就绪、阻塞和执行三种基本状态。</li>
+</ul>
+<p>线程的优点：减少并发执行的时间和空间开销（线程的创建，退出和调度），因此容许在系统中建立更多的线程来提高并发程度（进程间并发到进程内并发）。提高系统执行效率，减少处理机空转时间。</p>
+<ul>
+<li>线程的创建时间比进程短；</li>
+<li>线程的终止时间比进程短；</li>
+<li>同进程内的线程切换时间比进程短；</li>
+<li>由于同进程内线程间共享内存和文件资源，可直接进行不通过内核的通信。</li>
+</ul>
+<p>进程：</p>
+<ul>
+<li>资源分配的基本单位（PCB）；</li>
+<li>抢占处理机的调度单位；</li>
+<li>完整的虚拟地址空间；</li>
+<li>由正文集，数据集和PCB组成；</li>
+<li>进程切换时，涉及到有关资源信息的保存和地址空间的变化；</li>
+<li>进程调度与切换：操作系统内核完成；</li>
+</ul>
+<p>线程：</p>
+<ul>
+<li>与资源分配无关，与所属进程内的其他线程共享进程资源；</li>
+<li>与所属进程内的其他线程共享同一地址空间；</li>
+<li>由相关堆栈（系统栈和用户栈）寄存器和TCB组成，寄存器用来存放存储在线程内的局部量；</li>
+<li>线程切换时，不涉及到资源信息的保存和地址空间的变化，减少系统的开销；</li>
+<li>线程调度与切换：即可由操作系统内核完成，也可以由用户程序进行；</li>
+</ul>
+<p><strong>进程与线程的比较总结：</strong></p>
+<ul>
+<li>地址空间和其他资源（如打开文件）：进程间相互独立，同一进程的各线程间共享——某进程内的线程在其他进程不可见。</li>
+<li>通信：进程间通信IPC，线程间可以直接读写进程数据段（如全局变量）来进行通信。需要进程同步和互斥手段的辅助。以保证数据的一致性（使用线程一定要注意同步问题）。</li>
+<li>调度：线程上下文切换比进程上下文切换要快得多。</li>
+</ul>
+<p><strong>线程的适用范围：</strong></p>
+<ul>
+<li><p><strong>不适用于单一任务</strong>的情况下（实时系统等）（调度于切换反而会降低系统的效率）</p>
+</li>
+<li><p>适用于多任务</p>
+<ul>
+<li>多处理机系统</li>
+<li>同一进程内的多个执行线程（程序按照功能划分为不同的并发小段）</li>
+</ul>
+</li>
+<li><p>典型应用</p>
+<ul>
+<li>服务器中的文件管理</li>
+<li>前后台处理</li>
+<li>异步处理</li>
+<li>网络中的分布式处理</li>
+</ul>
+</li>
+</ul>
+<p><strong>线程的执行特性：</strong></p>
+<ul>
+<li>基本状态：（创建），就绪，执行，阻塞，（撤销）</li>
+<li>操作：<ul>
+<li>创建（派生）（spawn）</li>
+<li>调度（schedule）</li>
+<li>阻塞（block）</li>
+<li>激活（unblock）</li>
+<li>结束（finish）</li>
+</ul>
+</li>
+</ul>
+<p><strong>线程的分类：</strong></p>
+<ul>
+<li>基本类型：用户级线程，系统级线程（核心级、内核级）</li>
+<li>只使用核心级线程的OS：Windows NT，IBM 0s/2</li>
+<li>使用用户级线程和核心级线程的OS：Solaris</li>
+</ul>
+<p><strong>用户级线程：</strong></p>
+<ul>
+<li>不依赖OS核心</li>
+<li>应用进程利用线程库提供创建、同步、调度和管理线程的函数来控制用户线程。如：数据库系统informix，图形处理Aldus PageMaker</li>
+<li>调度由应用软件内部进行，通常采用非抢先式和更简单的规则</li>
+<li>也无需用户态/核心态切换，所以速度特别快</li>
+<li>一个线程发起系统调用而阻塞，则整个进程在等待</li>
+<li>时间片分配给进程，多线程则每个线程就慢</li>
+<li>用户线程的维护由应用进程完成；</li>
+<li>内核不了解用户线程的存在；</li>
+<li>用户线程切换不需要内核特权；</li>
+<li>用户线程调度算法可针对应用优化；</li>
+</ul>
+<p><strong>内核线程：</strong></p>
+<ul>
+<li>不依赖OS核心。</li>
+<li>由内核的内部需求进行创建和撤销，用来执行一个指定的函数（系统调用、API）。</li>
+<li>Windows NT和OS、2支持内核线程</li>
+</ul>
+<ul>
+<li>内核维护进程和线程的上下文信息；</li>
+<li>线程切换由内核完成；</li>
+<li>一个线程发起系统调用而阻塞，不会影响其他线程的运行。</li>
+<li>时间片分配给线程，所以多线程的进程获得更多CPU时间。</li>
+</ul>
+<p><strong>两种线程的差异：</strong>线程调度与切换、系统调用、CPU时间分配</p>
+<h3 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h3><p>所谓进程控制，就是系统使用一些具有特定功能的程序段来创建、撤销进程以及完成进程各状态间的转换，从而达到多进程高效率并发执行和协调，实现资源共享的目的。</p>
+<p><strong>原语</strong>：把系统下执行的某些具有特定功能的程序段称为原语，原语不是被中断的。</p>
+<p>用于进程控制的原语，有创建原语、撤销原语、阻塞原语、唤醒原语等等。</p>
+<p><strong>创建进程原语：</strong></p>
+<img src="https://i.loli.net/2020/05/31/NRGVTK2BHtlc1AU.png" alt="4.6创建进程原语.png" style="zoom:67%;" />
+
+<p><strong>撤销原语：</strong></p>
+<img src="https://i.loli.net/2020/05/31/l8DiPeyIXxH9fnr.png" alt="4.6撤销进程原语.png" style="zoom:67%;" />
+
+<p><strong>阻塞原语:</strong></p>
+<img src="https://i.loli.net/2020/05/31/k8UQiATcZr5Eqgw.png" alt="4.6阻塞原语.png" style="zoom:67%;" />
+
+<p><strong>唤醒原语：</strong></p>
+<img src="https://i.loli.net/2020/05/31/bsGtLfVDkN3nmv2.png" alt="4.6唤醒原语.png" style="zoom:67%;" />
+
+<h3 id="进程互斥"><a href="#进程互斥" class="headerlink" title="进程互斥"></a>进程互斥</h3><p>程序是静态的，无法表达并发的动态特征，引出了进程。</p>
+<p>进程具有独立性、异步性等并发运行的动态特征。</p>
+<p>表达了进程与进程间间接制约关系。</p>
+<p><strong>但是很多资源不能同时被访问</strong>，</p>
+<ul>
+<li>存储单元：同时读和写</li>
+<li>设备：同时操作</li>
+</ul>
+<p><strong>进程是可以访问共享资源的，但是需要规则。</strong>这就是间接制约，就是互斥。</p>
+<p><strong>相关定义：</strong></p>
+<p><strong>临界资源：</strong>不允许多个进程同时访问的资源称为临界资源。</p>
+<p><strong>临界区：</strong></p>
+<ul>
+<li>进程中<strong>访问临界资源的的程序</strong>称为临界区。</li>
+<li>不允许多个进程<strong>交叉执行的程序段</strong>称为临界区。</li>
+</ul>
+<p>注：临界区不是资源，而是程序段。</p>
+<p>把不允许<strong>两个以上</strong>的共享某共有资源的并发进程同时<strong>进入临界区</strong>称为互斥。</p>
+<p><strong>互斥原则：</strong></p>
+<ul>
+<li>空闲让进</li>
+<li>忙则等待</li>
+<li>有限等待</li>
+<li>让权等待</li>
+</ul>
+<p>互斥的加锁实现：</p>
+<p>进入临界区后，锁上临界区，直到退出临界区。</p>
+<p>并发进程在申请临界区时，<strong>首先测试是否上锁</strong>，如果临界区已经被锁住，则等待解锁后进入。</p>
+<p><strong>互斥加锁的代码实现</strong></p>
+<p>【1】</p>
+<p>初始状态下没有上锁，key=1表示可用</p>
+<p>Lock（key）<br>&lt;临界区&gt;<br>Unlock（key）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Lock(key)</span><br><span class="line">&#123;</span><br><span class="line">	while(key&#x3D;&#x3D;0);&#x2F;&#x2F;空死循环，若临界区中有进程，那么将第二个进程阻挡在临界区之外</span><br><span class="line">	key&#x3D;0;</span><br><span class="line">&#125;</span><br><span class="line">&lt;临界区&gt;</span><br><span class="line">Unlock(key)</span><br><span class="line">&#123;</span><br><span class="line">	key&#x3D;1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>【2】</p>
+<p>TS（Test and Set)指令实现加锁互斥</p>
+<p>初始状态下没有上锁，lock==false表示可用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TS</span><span class="params">(<span class="keyword">bool</span> x,<span class="keyword">bool</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">bool</span> temp;</span><br><span class="line">	temp=x;</span><br><span class="line">	x=y;</span><br><span class="line">	y=temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*-----TS实现交换-----*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> key;</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    key=<span class="literal">true</span>;<span class="comment">//锁上了</span></span><br><span class="line">    <span class="keyword">while</span>(key)TS(lock,key);</span><br><span class="line">    &lt;临界区操作&gt;</span><br><span class="line">    lock=<span class="literal">false</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/05/31/twfqpXUViyKzrRL.png" alt="4.7进程实现互斥.png"></p>
+<p>当先执行进程P1时…</p>
+<p><strong>加锁发存在两个突出问题</strong></p>
+<ul>
+<li>不断的测试，照成严重的资源浪费</li>
+<li>不公平现象，”永久饥饿”，不能保证等待的进程能顺序执行。</li>
+</ul>
+<p><strong>信号量和P，V原语</strong></p>
+<ul>
+<li>信号量：表现形式是一个整数附加一个队列</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">semaphore</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> value;<span class="comment">//可供并发进程使用资源的数量</span></span><br><span class="line">	pointer_PCB <span class="built_in">queue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>P原语</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">semaphore s;</span><br><span class="line">P(s)</span><br><span class="line">&#123;</span><br><span class="line">    关中断;</span><br><span class="line">    s.value=s.value<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span>(s.value&lt;<span class="number">0</span>)<span class="comment">//小于0说明进入临界区的资格不够了</span></span><br><span class="line">    &#123;</span><br><span class="line">        保护当前进程CPU现场;</span><br><span class="line">        该进程状态置为等待状态;</span><br><span class="line">        将该进程PCB插入相应的等待队列末尾s.<span class="built_in">queue</span>;</span><br><span class="line">        转进程调度;</span><br><span class="line">    &#125;</span><br><span class="line">    开中断;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>V原语</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">semaphore s;</span><br><span class="line">V(s)</span><br><span class="line">&#123;</span><br><span class="line">    关中断;</span><br><span class="line">    s.value=s.value+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(s.value&lt;=<span class="number">0</span>)<span class="comment">//只有小于等于0才表明刚才是有进程是正在处于等待状态</span></span><br><span class="line">    &#123;</span><br><span class="line">        唤醒相应等待队列s.<span class="built_in">queue</span>中的一个等待进程;</span><br><span class="line">        改变其状态为就绪态;</span><br><span class="line">        并将其插入就绪队列;</span><br><span class="line">        转进程调度;</span><br><span class="line">    &#125;</span><br><span class="line">	开中断;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>用P，V原语实现互斥：</strong></p>
+<ul>
+<li>设sem是用于互斥的信号量，初值为1；</li>
+<li>只要把临界区设置于P（sem）和V（sem）之间，就可以实现互斥。</li>
+<li><img src="https://i.loli.net/2020/05/31/3pe4YxzGvJOhqs2.png" alt="4.7P,V原语实现进程互斥.png"></li>
+</ul>
+<p>和加锁的方式相比，PV原语不再循环测试，解放了CPU；</p>
+<p>解决“永久饥饿”，当使用完临界资源的进程执行V操作后，将主动唤醒正在等待该资源队首进程。</p>
+<h4 id="读写者问题"><a href="#读写者问题" class="headerlink" title="读写者问题"></a>读写者问题</h4><p>第一类：读者优先</p>
+<p>读者（只要没写者在写，都可以读）：</p>
+<ul>
+<li>无读者、写者，新读者可读；</li>
+<li>有写者等，其它读者正在读，新读者也可以读；</li>
+<li>有写者写，新读者等；</li>
+</ul>
+<p>写者（无读者写者，新写者才可以写）：</p>
+<ul>
+<li>无读者、写者，新写者可以写；</li>
+<li>有读者读，新写者等待；</li>
+<li>有其他写者写，新写者等待；</li>
+</ul>
+<p><strong>代码：</strong></p>
+<p>设置互斥信号量xMutex，初值为1。</p>
+<p><img src="https://i.loli.net/2020/05/31/mZqE4eRSJwuP9CA.png" alt="4.7读写者问题.png"></p>
+<p>读者中的两个if语句：只需要第一个读者申请信号量，最后一个读者释放信号量。</p>
+<p>问题：有两个读进程同时进行。一旦定义全局变量，全局变量也是临界区，所以为了避免count被同时访问，需要对跟count有关的代码前后加P,V。</p>
+<p>改造：</p>
+<p>​    设置两个互斥的信号量和一个共享变量。</p>
+<ul>
+<li>共享变量count，初值为0，表示正在读进程的数目</li>
+<li>由于count本身也是个临界资源，设置一个互斥信号量rMutex，初值为1，实现读进程互斥地访问count。</li>
+<li>设置写互斥信号量wMutex初值为1，实现读写进程之间的互斥和写写进程之间的互斥。</li>
+</ul>
+<img src="https://i.loli.net/2020/06/01/MzXsH3xrIkmJycl.png" alt="4.7读者优先.png" style="zoom:80%;" />
+
+<p>第二类：写者优先</p>
+<p>读者：</p>
+<ul>
+<li>无读者、写者，新读者可读；</li>
+<li>多个读者可以同时读，但是有写者等，写者后续的读者就需要等，唤醒时优先唤醒写者；</li>
+<li>有写者写，新读者等；</li>
+</ul>
+<p>写者（无读者写者，新写者才可以写）：</p>
+<ul>
+<li>无读者、写者，新写者可以写；</li>
+<li>有读者读，新写者等待；</li>
+<li>有其他写者写，新写者等待；</li>
+</ul>
+<img src="https://i.loli.net/2020/06/01/vqlywzrXkMxpDB7.png" alt="4.7写者优先.png" style="zoom:80%;" />
+
+<h3 id="进程的同步"><a href="#进程的同步" class="headerlink" title="进程的同步"></a>进程的同步</h3><p><strong>引入：</strong></p>
+<ul>
+<li>并发进程竞争公用资源，引出了互斥的概念以及实现方法。</li>
+</ul>
+<p>那么是否还存在其他制约关系？</p>
+<p>引例：</p>
+<ul>
+<li>计算进程和打印进程共同使用同一个缓冲区Buffer<ul>
+<li>计算进程反复地把每次计算结果放入Buffer</li>
+<li>打印进程反复地取出Buffer的数据打印输出</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/01/H8AvckjUPrFRaCE.png" alt="4.8进程同步的概念.png"></p>
+<p><strong>直接制约：</strong></p>
+<ul>
+<li>假定对Buffer已采用互斥措施</li>
+<li>上述方法造成了CPU极大的浪费</li>
+<li>分析：<ul>
+<li>甲的结果是乙的执行条件</li>
+<li>乙的结果是甲的执行条件</li>
+</ul>
+</li>
+<li>这与互斥不同，并发进程之间存在直接制约的关系。</li>
+</ul>
+<p><strong>用PV原语来实现进程同步：</strong></p>
+<p>A为发送进程，B为接收进程，二者通过缓冲区Buffer传递数据。</p>
+<ul>
+<li>条件：<ul>
+<li>缓冲区为空，B不能取出</li>
+<li>缓冲区为满，A不能发送</li>
+</ul>
+</li>
+</ul>
+<p><strong>分析进程同步（单缓冲）</strong></p>
+<ul>
+<li>申请什么？释放什么？初始有几个？<ul>
+<li>进程A：缓存区的位置、数据</li>
+<li>进程B：数据、缓存区的位置</li>
+</ul>
+</li>
+</ul>
+<p>PV实现：</p>
+<ul>
+<li>设Bufempty为A的私有信号量，初值为1</li>
+<li>设Buffull为B的私有信号量，初值为0</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/01/nXF9iIU24f1CTWE.png" alt="4.8打印输出设计.png"></p>
+<p><strong>分析进程同步（多缓冲）</strong></p>
+<p>A为发送进程，B为接收进程，二者通过缓冲区Buffer传递数据。</p>
+<ul>
+<li>条件：<ul>
+<li>缓冲区空时，B不能取</li>
+<li>缓存区满时，A不能发送</li>
+<li>缓冲区按照FIFO（先进先出）排列</li>
+</ul>
+</li>
+</ul>
+<p>PV实现：</p>
+<ul>
+<li>设Bufempty为A的私有信号量，初值为n</li>
+<li>设Buffull为B的私有信号量，初值为0</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/01/FqE48eSbuR1WIPV.png" alt="4.8 PV实现多缓存打印输出.png"></p>
+<h4 id="生产者消费者问题"><a href="#生产者消费者问题" class="headerlink" title="生产者消费者问题"></a>生产者消费者问题</h4><ul>
+<li>为互斥设置一个公用信号量 Mutex ，初值为1；</li>
+<li>为同步设置两个私有信号量<ul>
+<li>empty，初值为n；</li>
+<li>full，初值为0；</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/01/uInYsxoy84E6dcf.png" alt="4.8生产者消费者问题.png"></p>
+<p><strong>同步与互斥一些结论：</strong></p>
+<ul>
+<li><p>PV操作必须成对出现</p>
+<ul>
+<li>当为互斥操作时，处于同一进程</li>
+<li>当为同步操作时，一般不在同一进程</li>
+</ul>
+</li>
+<li><p>如果P（S1）和P（S2）两个操作在一起，那么P操作的顺序至关重要：<strong>同步P操作在前，互斥P操作在后。</strong></p>
+</li>
+<li><p>两个V操作无关紧要。</p>
+</li>
+</ul>
+<h4 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a>哲学家就餐问题</h4><p>有5个哲学家以思考、就餐交替执行的方式进行活动，桌上有5只 <del>叉子</del> 筷子。</p>
+<img src="https://i.loli.net/2020/06/01/ghpzqQxCyBbj38D.png" alt="4.9哲学家就餐问题.png" style="zoom:67%;" />
+
+<p>哲学家的需求：</p>
+<ul>
+<li>哲学家吃饭需要两个筷子</li>
+<li>每一次必须抢一只筷子，只能一只</li>
+<li>只能取身边（左边和右边）的叉子</li>
+<li>吃完才能放下叉子</li>
+</ul>
+<p>将每支筷子设置为一个信号量，初值都为1.</p>
+<p>var chop array[0…4] of semaphore;</p>
+<p>哲学家的活动如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">&#123;</span><br><span class="line">    思考;</span><br><span class="line">    p(chop[i]);<span class="comment">//申请左边的筷子</span></span><br><span class="line">    p(chop[(i+<span class="number">1</span>)%<span class="number">5</span>]);<span class="comment">//申请右边筷子</span></span><br><span class="line">    进食;</span><br><span class="line">    v(chop[i]);<span class="comment">//释放左边筷子</span></span><br><span class="line">    v(chop[(i+<span class="number">1</span>)%<span class="number">5</span>]);<span class="comment">//释放右边筷子</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h3><p>并发进程之间的交往本质上是互相交换信息。有些情况下进程交换的信息量很少，例如仅仅交换某个状态信息。</p>
+<p>有些情况下进程之间交换大批数据，例如传送一批信息或整个文件。</p>
+<p>进程之间互相交换信息工作称之为进程通信IPC（InterProcess Communication）。</p>
+<p><strong>进程间通信类型：</strong></p>
+<ul>
+<li>低级通信：只能传递状态和整数（控制信息），包括进程互斥和同步所采用的信号机制。缺点是：<ul>
+<li>传送信息量小：效率低，若传递较多信息需要进行多次通信。</li>
+<li>编程负责：用户直接实现通信细节，编程复杂，容易出错。</li>
+</ul>
+</li>
+<li>高级通信：能够传送任意数量的数据，包括三类：共享存储区、管道、消息。</li>
+</ul>
+<ul>
+<li>直接通信：信息直接传递给接受方，如管道。<ul>
+<li>发送信息时，指定接收方的地址或标识；</li>
+<li>接受信息时，允许接受来自任意发送方的消息，并在读出消息的同时获取发送方的地址。</li>
+</ul>
+</li>
+<li>间接通信：借助于收发双方进程之外的共享数据结构作为通信中转，如消息队列。</li>
+</ul>
+<p><strong>共享存储区通信机制：</strong></p>
+<p>​    内存中开辟一个共享存储区，诸进程通过该区实现通信，这是进程通信中最快的方法。</p>
+<p><img src="https://i.loli.net/2020/06/01/oVu3vIdtOfClE95.png" alt="4.9共享存储区通信方式.png"></p>
+<p>与共享存储有关的UNIX系统调用有四个：</p>
+<ul>
+<li><p>创建或打开共享存储区（shmget）：创建新区或打开现有区，返回一个共享存储区的ID。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int shmeget(kry_t key,size_t size,int flag);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连接共享存储区（shmat）：连接共享存储区到本进程的地址空间，返回共享存储区首地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void *shmat(int shmid,const void *addr,int flag);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除共享存储区连接（shmdt）：拆除共享存储区与本进程地址空间的连接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int shmdt(void *addr);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>共享存储区控制（shmctl）：对共享存储区进行控制。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int shmctl(int shmid,int cmd,struct shmid_ds *buf);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<p><strong>管道通信机制：</strong></p>
+<p>​    管道（pipe）是连接读写程序的一个特殊文件，允许进程按照先进先出方式传送数据。</p>
+<p>​    发送进程以字符流形式把大量数据送入管道，接收进程从管道中接收数据，所以，也可以叫管道通信。</p>
+<p><img src="https://i.loli.net/2020/06/01/RtTXSkYE5hi8M6F.png" alt="4.9管道通信.png"></p>
+<ul>
+<li><p>通过pipe系统调用创建无名管道，得到两个文件扫描符，分别用于写和读。</p>
+<p>int pipe（int fd[2]);</p>
+</li>
+<li><p>文件描述符fd[0]为读端，fd[1]为写端；</p>
+</li>
+<li><p>通过系统调用write和read进行管道写和读；</p>
+</li>
+<li><p>只适用于父子进程之间或父进程安排的各个子进程之间；</p>
+</li>
+<li><p>子进程访问管道时应该是互斥的。</p>
+<ul>
+<li>lockf(fd[1],1,0);//加锁锁定写入端</li>
+<li>lockf(fd[1],0,0);//释放管道写入段</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x,fd[<span class="number">2</span>];</span><br><span class="line"><span class="keyword">char</span> buf[<span class="number">30</span>],s[<span class="number">30</span>];</span><br><span class="line">pipe(fd);<span class="comment">//创建管道</span></span><br><span class="line"><span class="keyword">while</span>((x=fork())==<span class="number">-1</span>);<span class="comment">//创建子进程直至成功</span></span><br><span class="line"><span class="keyword">if</span>(x==<span class="number">0</span>)&#123;<span class="comment">//此时执行子进程</span></span><br><span class="line">    <span class="built_in">sprintf</span>(buf,<span class="string">"this is a message!"</span>);</span><br><span class="line">    <span class="built_in">write</span>(fd[<span class="number">1</span>],buf,<span class="number">30</span>);<span class="comment">//把缓冲区字符串写入管道</span></span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;<span class="comment">//此时执行父进程</span></span><br><span class="line">    wait(<span class="number">0</span>);<span class="comment">//阻塞自己，直到子程序执行完毕</span></span><br><span class="line">    <span class="built_in">read</span>(fd[<span class="number">0</span>],s,<span class="number">30</span>);<span class="comment">//父进程读取管道字符串</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s"</span>,s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Windows 管道</p>
+<p>​    类似于UNIX管道，CreatePipe可创建无名管道，，得到两个写句柄；利用ReadFile和WriteFile（文件操作函数）可进行无名管道的读写；</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">BooL CreatePipe</span><br><span class="line">(</span><br><span class="line">    PHANDLE hReadPipe,<span class="comment">//管道读端</span></span><br><span class="line">    PHANDLE hWritePite,<span class="comment">//管道写端</span></span><br><span class="line">    LPSECURITY_ATTRIBUTES lpPipeAttributes,<span class="comment">//继承默认描述符，常用true</span></span><br><span class="line">    DWORD nSize<span class="comment">//管道缓冲区大小</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>消息传递机制：</strong></p>
+<p>（1）直接通信方式</p>
+<p>​    在直接通信方式下，企图发送或接收信息的每个进程必须指出信件发给谁或从谁那里接收信息，可用send原语和receive原语为实现进程之间的通信：</p>
+<p>​    send（P，消息）：把一个消息发送给进程P。</p>
+<p>​    receive（Q，消息）：从进程Q接收一个消息</p>
+<p>这样，进程P和Q通过执行这两个操作而自带建立了一种联结，并且这一种联结仅仅发生在这一对进程之间。</p>
+<p>（2）间接通信方式</p>
+<p>​    采用间接通信方式时，进程间发送或接收信息通过一个信箱来进行，消息可用被理解成信件，每个信箱有一个唯一的标识符。</p>
+<p>​    在间接通信方式”方式”和”接收“原语的形式如下：</p>
+<p>​    send（A，信件）：把一封信件传送到信箱A。</p>
+<p>​    receive（A，信件）：从信箱A接收一封信件。</p>
+<p>发送信件。如果指定信箱未满，则将信件送入信箱中由指针所指示的位置，并释放等待该信箱中的信件的等待者；否则发送信件者被置成等待状态。</p>
+<p>接收信件。如果指定信箱中有信，则取出一封信件，否则接收信件者被置成等待信箱中信件的状态。</p>
+<p>两个原语的算法描述如下，</p>
+<p>以下是信箱结构体：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">type box=record</span><br><span class="line">	<span class="built_in">size</span>:integer;	<span class="comment">//信箱大小</span></span><br><span class="line">	count:integer;	<span class="comment">//现有信件数</span></span><br><span class="line">	letter:<span class="built_in">array</span>[<span class="number">1.</span>..n]of message;	<span class="comment">//信件</span></span><br><span class="line">	S1,S2:semaphore;	<span class="comment">//信箱和信件号量</span></span><br><span class="line"><span class="built_in">end</span></span><br></pre></td></tr></table></figure>
+
+<p>发信：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">procedure <span class="title">send</span><span class="params">(varB:box,M:message)</span><span class="comment">//发信</span></span></span><br><span class="line"><span class="function">	var I:integer</span>;</span><br><span class="line">    <span class="built_in">begin</span></span><br><span class="line">        <span class="keyword">if</span> B.count=B.<span class="built_in">size</span> then P(B.s1);<span class="comment">//如果信箱已满，阻塞</span></span><br><span class="line">    	i:=B.count+<span class="number">1</span>;</span><br><span class="line">    	B.letter[i]:=M;</span><br><span class="line">    	B.count:=i;</span><br><span class="line">    	V(B.S2);<span class="comment">//如果有等待收信者，则还需唤醒</span></span><br><span class="line">	<span class="built_in">end</span>;</span><br></pre></td></tr></table></figure>
+
+<p>收信：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">procedure <span class="title">receive</span><span class="params">(varB:box,x:message)</span>	<span class="comment">//收信</span></span></span><br><span class="line"><span class="function">    var o:integer</span>;</span><br><span class="line">	<span class="built_in">begin</span></span><br><span class="line">        <span class="keyword">if</span> B.count=<span class="number">0</span> then P(B.s2);<span class="comment">//如果信箱已空，则阻塞</span></span><br><span class="line">		B.count:=B.count<span class="number">-1</span>;</span><br><span class="line">		x:=B.letter[<span class="number">1</span>];</span><br><span class="line">		<span class="keyword">if</span>(B.count !=<span class="number">0</span>) then</span><br><span class="line">            <span class="keyword">for</span> i=<span class="number">1</span> to B.count <span class="keyword">do</span></span><br><span class="line">                B.letter[i]:=B.letter[i+<span class="number">1</span>];</span><br><span class="line">		V(B.S1);<span class="comment">//如果有等待发信者，则还需要唤醒</span></span><br><span class="line">	<span class="built_in">end</span>;</span><br></pre></td></tr></table></figure>
+
+<p>生产者—消费者问题</p>
+<p><img src="https://i.loli.net/2020/06/01/vuqg2VfmK4Wzr9I.png" alt="4.9信息传递机制生产者—消费者1.png"></p>
+<p><img src="https://i.loli.net/2020/06/01/hKrP2U3lfMBWQ49.png" alt="4.9信息传递机制生产者—消费者2.png"></p>
+<p><img src="https://i.loli.net/2020/06/01/lEDwUchgWrJaVxG.png" alt="4.9信息传递机制生产者—消费者3.png"></p>
+<p>【例题】</p>
+<p>(1)    在操作系统中，P、V操作是一种<strong><strong><strong><strong>__</strong></strong></strong></strong>。</p>
+<p>A.机器指令</p>
+<p>B.系统调用命令</p>
+<p>C.作业控制命令</p>
+<p>D.低级进程通讯原语</p>
+<p>解析：D </p>
+<p>  P操作原语： </p>
+<p>  信号量sem 减1； </p>
+<p>  若信号量sem 大于等于0，线程继续执行； </p>
+<p>  若信号量sem &lt; 0 ，线程进入阻塞队列。 </p>
+<p>  V 操作原语： </p>
+<p>  信号量sem加1； </p>
+<p>  若信号量sem 大于 0, 线程继续执行； </p>
+<p>  若信号量sem 小于等于0,唤醒阻塞队例的线程。 </p>
+<p>（2）</p>
+<p> 三个进程P1、P2、P3互斥使用一个包含N(N＞0)个单元的缓冲区。<br> P1每次用produce(  )生成一个正整数并用put(  )送入缓冲区某一空单元中；<br> P2每次用getodd(  )从该缓冲区中取出一个奇数并用countodd(  )统计奇数个数；<br> P3每次用geteven(  )从该缓冲区中取出一个偶数并用eounteven(  )统计偶数个数。请用信号量机制实现这三个进程的同步与互斥活动，并说明所定义的信号量的含义。要求用伪代码描述。</p>
+<p>本题属于生产者——消费者问题的变形：P1相当于生产者，P2、P3相等与消费者，共享多缓冲区。</p>
+<ul>
+<li>缓存区是临界资源，因此设互斥信号量mutex。</li>
+<li>P1、P2因奇数的放置与取用而同步，设同步信号量odd；</li>
+<li>P1、P3因偶数的放置与取用而同步，设同步信号量even；</li>
+<li>P1、P2、P3因共享缓存区而同步，设同步信号量empty。</li>
+<li>semaphore mutex=1,odd=0,even=0,empty=N;</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">Process</span> <span class="title">P1</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		number=produce();</span><br><span class="line">		P(empty);</span><br><span class="line">		P(mutex);</span><br><span class="line">		<span class="built_in">put</span>();</span><br><span class="line">		V(mutex);</span><br><span class="line">		<span class="keyword">if</span> number %<span class="number">2</span>==<span class="number">0</span></span><br><span class="line">			V(even);</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			V(odd);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">Process</span> <span class="title">P2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        P(odd);</span><br><span class="line">        P(mutex);</span><br><span class="line">        getodd();</span><br><span class="line">        V(mutex);</span><br><span class="line">        V(empty);</span><br><span class="line">        <span class="function">count <span class="title">odd</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">Process</span> <span class="title">P3</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        P(even);</span><br><span class="line">        P(mutex);</span><br><span class="line">        geteven();</span><br><span class="line">        V(mutex);</span><br><span class="line">        V(empty);</span><br><span class="line">        counteven();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="死锁问题"><a href="#死锁问题" class="headerlink" title="死锁问题"></a>死锁问题</h3><p><strong>死锁避免的定义：</strong></p>
+<ul>
+<li>在系统运行过程中，对进程发出资源申请进行动态检查，根据检查结果决定是否分配。</li>
+<li>若分配后系统可能发生死锁，则不给予分配，否则给予分配。</li>
+</ul>
+<p><strong>与死锁的区别：</strong></p>
+<ul>
+<li>死锁预防是破坏产生死锁的必要条件，严格防止死锁的发生。</li>
+<li>死锁避免没有那么严格，是一种动态策略</li>
+</ul>
+<p><strong>安全状态</strong></p>
+<ul>
+<li>如果存在一个由所有进程构成的安全序列{P1,P2,…,Pn},则系统处于安全状态。</li>
+</ul>
+<p><strong>安全状态：</strong></p>
+<ul>
+<li>一个进程序列{P1,P2,…,Pn}，如果对于每一个进程P<sub>i</sub>（1&lt;=i&lt;=n),它以后还需要的资源量不超过系统当前剩余资源量与所有进程P<sub>j</sub>（j&lt;i)当前占有资源量之和，这个序列就是安全序列。<ul>
+<li>M：系统剩余资源量</li>
+<li>Alloc<sub>i</sub>:进程i占有的资源量，Need<sub>i</sub>:进程i还需要的资源量<ul>
+<li>P<sub>1</sub>:Need&lt;=M</li>
+<li>P<sub>2</sub>:Need&lt;=M+Alloc<sub>1</sub></li>
+<li>P<sub>3</sub>:Need&lt;=M+Alloc<sub>1</sub>+Alloc<sub>2</sub></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>不安全状态：</strong></p>
+<ul>
+<li>不安全状态：不存在一个安全序列</li>
+<li>不安全状态不一定发生死锁（只是说明所有进程存在一个死锁的危险）</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/01/HIhD31MbgYtReC8.png" alt="4.10第一次分配后系统状态.png"></p>
+<p>一开始剩余资源量只能满足P3进程，当进程完成后剩余资源量为5；</p>
+<p>接下来就可以允许P2进程，完成P2后剩余资源量为10；</p>
+<p>于是就能满足P1进程需求，完成后剩余资源量为12。</p>
+<p>存在安全序列为{P3，P2，P1}。</p>
+<p><img src="https://i.loli.net/2020/06/01/4uevwXyO3gG5qbV.png" alt="4.10第二次分配后系统状态.png"></p>
+<p>把所有资源给到P3，P3不能完成，所以不存在安全序列。</p>
+<p><strong>银行家算法：</strong></p>
+<ul>
+<li><p>在安全状态下收到进程资源请求后，先把资源试探性分配给它；</p>
+</li>
+<li><p>在进程集合中找到剩余资源能满足其需求量的进程，保证这个进程运行完毕并归还全部资源</p>
+</li>
+<li><p>把这个进程从集合中去掉，剩余资源变多了，反复执行上述步骤。</p>
+</li>
+<li><p>检查进程集合，若为空表明系统处于安全状态，实施本次分配。</p>
+</li>
+<li><p>否则，有进程执行不完，系统处于不安全状态，本次资源分配暂不实施，申请进程等待。</p>
+</li>
+</ul>
+<p>总结：</p>
+<ul>
+<li>有资源请求，试探性分配</li>
+<li>找安全序列</li>
+<li>有安全序列就实施分配，否则退回系统。</li>
+</ul>
+<p><strong>代码实现：</strong></p>
+<p><img src="https://i.loli.net/2020/06/02/f7Gk9BJCy1YFoWR.png" alt="4.10 银行家算法1.png"></p>
+<p>算法流程：</p>
+<p><img src="https://i.loli.net/2020/06/02/OIKxTMC3jJi9rGl.png" alt="4.10银行家算法算法流程.png"></p>
+<p>（4）安全状态检查算法</p>
+<p><img src="https://i.loli.net/2020/06/02/MwrzF9JaVKUstPf.png" alt="4.10银行家算法算法流程1.png"></p>
+<p><strong>死锁的检测</strong>：</p>
+<p>不断检测系统状态判断死锁是否会发生。</p>
+<ul>
+<li>允许死锁发生，不断监测系统状态，判断死锁是否会发生。</li>
+<li>死锁一旦发生则采用干预措施，解除死锁。</li>
+<li>以最小的代价恢复操作系统的运行。</li>
+</ul>
+<p>如何检测死锁：</p>
+<p><strong>检测时机和方式：</strong></p>
+<p>检测时机：</p>
+<ul>
+<li>当进程等待时检测死锁</li>
+<li>定时检测</li>
+<li>系统资源利用率下降时检测死锁</li>
+</ul>
+<p>检测方式：</p>
+<p>对资源分配图进行化简。</p>
+<p>资源分配图：</p>
+<ul>
+<li>方框：资源类</li>
+<li>方框中的圆点：资源实例</li>
+<li>圆圈：进程</li>
+</ul>
+<ul>
+<li>分配边：资源实例→进程的的一条有向边</li>
+<li>申请边：进程→资源类一条有向边</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/02/lA6W5mUNzJapDui.png" alt="4.10资源分配图.png"></p>
+<p>对资源分配图进行化简：</p>
+<ul>
+<li>在图中找到一个请求边均能立即满足的进程顶点P<sub>i</sub>，将与P<sub>i</sub>相邻的边全部删除。</li>
+<li>重复直至找不到P<sub>i</sub>为止</li>
+</ul>
+<p>若所以进程的顶点都成了孤立点，则称该图可完全化简。</p>
+<p>否则不能完全化简，非孤立点的进程处于死锁状态。</p>
+<p>环路与死锁</p>
+<ul>
+<li><p>如果资源分配图中没有环路，则系统中没有死锁。</p>
+</li>
+<li><p>如果存在环路，则系统中可能存在死锁</p>
+</li>
+<li><p>如果每一种资源类中都只包含一个资源实例，则环路是死锁存在的充分必要条件。</p>
+</li>
+</ul>
+<p><strong>死锁的解除：</strong></p>
+<ul>
+<li>一般破坏循环等待条件<ul>
+<li>从死锁进程中选择一个或多个进程删除，剥夺它们的资源给其他进程适用。</li>
+<li>选择要删除的进程时，一般从优先级、已运行时间以及已用多少资源等几个方面去考虑，使系统损失最小。</li>
+</ul>
+</li>
+</ul>
+<p><strong>死锁的综合处理：</strong></p>
+<p><img src="https://i.loli.net/2020/06/02/imb7tsS38MuWaEw.png" alt="4.10死锁的综合处理.png"></p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>实验环境：Deepin Linux V20</p>
+<h4 id="一-读者写者问题分析"><a href="#一-读者写者问题分析" class="headerlink" title="一.     读者写者问题分析"></a>一.     读者写者问题分析</h4><h5 id="读者优先"><a href="#读者优先" class="headerlink" title="读者优先"></a>读者优先</h5><p>如果有一个读者申请进行读操作时已有另外一个读者正在进行读操作，则该读者可直接开始读操作。</p>
+<p><img src="https://i.loli.net/2020/07/02/1BNZd6cfKtQPXTI.png" alt="读者优先.png"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> W_NUM 3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> R_NUM 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">sem_t</span> count;</span><br><span class="line"><span class="keyword">sem_t</span> write0;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pthread_t</span> W_id[W_NUM];</span><br><span class="line"><span class="keyword">pthread_t</span> R_id[R_NUM];</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> readcount=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">READER</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> reader;</span><br><span class="line">    reader=*(<span class="keyword">int</span>*)arg;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n---Reader %d is waiting.---\n"</span>,reader);</span><br><span class="line">        sem_wait(&amp;count);</span><br><span class="line">        readcount++;</span><br><span class="line">        <span class="keyword">if</span>(readcount==<span class="number">1</span>)</span><br><span class="line">            sem_wait(&amp;write0);</span><br><span class="line">        sem_post(&amp;count);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n------Reader %d is reading.------\n"</span>,reader);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        sem_wait(&amp;count);</span><br><span class="line">        readcount--;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n*------Reader %d finished reading.------*\n"</span>,reader);</span><br><span class="line">        <span class="keyword">if</span>(readcount==<span class="number">0</span>)</span><br><span class="line">            sem_post(&amp;write0);</span><br><span class="line">        sem_post(&amp;count);</span><br><span class="line">        sleep(<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">WRITER</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> writer;</span><br><span class="line">    writer=*(<span class="keyword">int</span>*)arg;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n***Writer %d is waiting.***\n"</span>,writer);</span><br><span class="line">        sem_wait(&amp;write0);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n******Writer %d is writing.******\n"</span>,writer);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n-******Writer %d finished writing.******-\n"</span>,writer);</span><br><span class="line">        sem_post(&amp;write0);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num[<span class="number">5</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br><span class="line">    <span class="comment">//初始化信号量</span></span><br><span class="line">    sem_init(&amp;count,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">    sem_init(&amp;write0,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建线程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;W_NUM;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_create(&amp;W_id[i],<span class="literal">NULL</span>,WRITER,&amp;num[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;R_NUM;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_create(&amp;R_id[i],<span class="literal">NULL</span>,READER,&amp;num[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//挂起线程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;W_NUM;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_join(W_id[i],<span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;R_NUM;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_join(R_id[i],<span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//摧毁信号量</span></span><br><span class="line">    sem_destroy(&amp;count);</span><br><span class="line">    sem_destroy(&amp;write0);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/07/02/xVdIh4Zmvc9uon2.png" alt="读者优先运行结果.png"></p>
+<p>若当前有一个读者正在读操作，其他已申请的读者可直接开始读操作，且只有当所有读者完成读操作后，已申请的写者才可以进行写操作。</p>
+<h5 id="写者优先（有点小问题-）"><a href="#写者优先（有点小问题-）" class="headerlink" title="写者优先（有点小问题*）"></a>写者优先（有点小问题*）</h5><p>​    如果读者申请进行读操作时已经有另一个写者在等待访问共享资源，则该读者必须等到没有写者处于等待状态后才能开始读操作。</p>
+<p><img src="https://i.loli.net/2020/07/02/IcbnvKkF2NXPJOS.png" alt="写者优先.png"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> W_NUM 3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> R_NUM 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">sem_t</span> count;</span><br><span class="line"><span class="keyword">sem_t</span> write0;</span><br><span class="line"><span class="keyword">sem_t</span> P;</span><br><span class="line"><span class="keyword">pthread_t</span> W_id[W_NUM];</span><br><span class="line"><span class="keyword">pthread_t</span> R_id[R_NUM];</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> readcount=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">READER</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> reader;</span><br><span class="line">    reader=*(<span class="keyword">int</span>*)arg;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n---Reader %d is waiting.---\n"</span>,reader);</span><br><span class="line">        sem_wait(&amp;P);</span><br><span class="line">        sem_wait(&amp;count);</span><br><span class="line">        readcount++;</span><br><span class="line">        <span class="keyword">if</span>(readcount==<span class="number">1</span>)</span><br><span class="line">            sem_wait(&amp;write0);</span><br><span class="line">        sem_post(&amp;count);</span><br><span class="line">        sem_post(&amp;P);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n------Reader %d is reading.------\n"</span>,reader);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">        sem_wait(&amp;count);</span><br><span class="line">        readcount--;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n*------Reader %d finished reading.------*\n"</span>,reader);</span><br><span class="line">        <span class="keyword">if</span>(readcount==<span class="number">0</span>)</span><br><span class="line">            sem_post(&amp;write0);</span><br><span class="line">        sem_post(&amp;count);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">WRITER</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> writer;</span><br><span class="line">    writer=*(<span class="keyword">int</span>*)arg;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        sem_wait(&amp;P);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n***Writer %d is waiting.***\n"</span>,writer);</span><br><span class="line">        sem_wait(&amp;write0);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n******Writer %d is writing.******\n"</span>,writer);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n-******Writer %d finished writing.******-\n"</span>,writer);</span><br><span class="line">        sem_post(&amp;write0);</span><br><span class="line">        sem_post(&amp;P);</span><br><span class="line">        sleep(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num[<span class="number">5</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化信号量</span></span><br><span class="line">    sem_init(&amp;count,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">    sem_init(&amp;write0,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">    sem_init(&amp;P,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建线程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;W_NUM;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_create(&amp;W_id[i],<span class="literal">NULL</span>,WRITER,&amp;num[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;R_NUM;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_create(&amp;R_id[i],<span class="literal">NULL</span>,READER,&amp;num[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//挂起线程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;W_NUM;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_join(W_id[i],<span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;R_NUM;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_join(R_id[i],<span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//摧毁信号量</span></span><br><span class="line">    sem_destroy(&amp;count);</span><br><span class="line">    sem_destroy(&amp;write0);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/07/02/YSz6FRd4K1fEB3O.png" alt="写者优先运行结果.png"></p>
+<p>当读者和写者同时在等时，写者后续的读者就需要等，优先唤醒写者。</p>
+<h4 id="二-苹果橘子问题"><a href="#二-苹果橘子问题" class="headerlink" title="二.     苹果橘子问题"></a>二.     苹果橘子问题</h4><p>​    首先，爸爸，妈妈，儿子，女儿对盘子操作是互斥的，而爸爸和女儿，妈妈和儿子间又是同步关系，所以需要设置两个互斥信号量和两个和两个同步信号量。</p>
+<p><img src="https://i.loli.net/2020/07/02/nEqMhbOP62cBFd3.png" alt="苹果橘子.png"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">sem_t</span> mutex,empty;<span class="comment">//huchi</span></span><br><span class="line"><span class="keyword">sem_t</span> apple,orange;<span class="comment">//tongbu</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delay</span><span class="params">(<span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i=rand()%len;</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">while</span>(i&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        x=rand()%len;</span><br><span class="line">        <span class="keyword">while</span>(x&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            x--;</span><br><span class="line">        &#125;</span><br><span class="line">        i--;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">Father</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sem_wait(&amp;empty);</span><br><span class="line">        sem_wait(&amp;mutex);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n----------father put apple----------\n"</span>);</span><br><span class="line">        <span class="built_in">delay</span>(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        sem_post(&amp;mutex);</span><br><span class="line">        sem_post(&amp;apple);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">Mom</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sem_wait(&amp;empty);</span><br><span class="line">        sem_wait(&amp;mutex);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n**********mother put orange**********\n"</span>);</span><br><span class="line">        <span class="built_in">delay</span>(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        sem_post(&amp;mutex);</span><br><span class="line">        sem_post(&amp;orange);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">Son</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sem_wait(&amp;orange);</span><br><span class="line">        sem_wait(&amp;mutex);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n***son take the orange***\n"</span>);</span><br><span class="line">        <span class="built_in">delay</span>(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        sem_post(&amp;mutex);</span><br><span class="line">        sem_post(&amp;empty);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n***son eat orange***\n"</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">delay</span>(<span class="number">2000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">Daughter</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sem_wait(&amp;apple);</span><br><span class="line">        sem_wait(&amp;mutex);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n---daughter take the apple---\n"</span>);</span><br><span class="line">        <span class="built_in">delay</span>(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        sem_post(&amp;mutex);</span><br><span class="line">        sem_post(&amp;empty);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n---daughter eat apple---\n"</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">delay</span>(<span class="number">2000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    srand(time(<span class="literal">NULL</span>));</span><br><span class="line">    <span class="keyword">pthread_t</span> father;</span><br><span class="line">    <span class="keyword">pthread_t</span> mom;</span><br><span class="line">    <span class="keyword">pthread_t</span> son;</span><br><span class="line">    <span class="keyword">pthread_t</span> daughter;</span><br><span class="line"></span><br><span class="line">    sem_init(&amp;mutex,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">    sem_init(&amp;empty,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">    sem_init(&amp;apple,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    sem_init(&amp;orange,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    pthread_create(&amp;father,<span class="literal">NULL</span>,&amp;Father,<span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;mom,<span class="literal">NULL</span>,&amp;Mom,<span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;son,<span class="literal">NULL</span>,&amp;Son,<span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;daughter,<span class="literal">NULL</span>,&amp;Daughter,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    pthread_join(father,<span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(mom,<span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(son,<span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(daughter,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/07/02/oLdHAgCfiSYJ2Ic.png" alt="苹果橘子问题运行结果.png"></p>
+<p>​       由于盘子只有一个，所以每次father与mother需要竞争资源，只有盘子为空时，才能在盘子上放上水果，同时，只有当儿子/女儿拿起盘子上对应的水果时，才能进行下一次放水果。</p>
+<h4 id="三、哲学家就餐问题"><a href="#三、哲学家就餐问题" class="headerlink" title="三、哲学家就餐问题"></a>三、哲学家就餐问题</h4><p>​    哲学家就餐问题是一个经典的同步问题，该问题需要满足在多个进程之间分配多个资源同时不会发生死锁或是饥饿。</p>
+<p>​    为了避免所有哲学家同时饥饿并同时拿起左（或是右）筷子而可能导致的死锁情况，实验中采用非对称解决方案。即单号哲学家先拿起左筷子再接着拿右筷子双号哲学家则先拿起右筷子再拿起左筷子。</p>
+<p><img src="https://i.loli.net/2020/07/02/tXxv1qcmZEkaywT.png" alt="哲学家就餐问题.png"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 5</span></span><br><span class="line"><span class="keyword">sem_t</span> chopstick[N];<span class="comment">//设置5种信号量</span></span><br><span class="line"><span class="keyword">int</span> philosophers[N]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;<span class="comment">//5位哲学家</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delay</span><span class="params">(<span class="keyword">int</span> len)</span></span>&#123; <span class="comment">//设置随机等待时间</span></span><br><span class="line">    <span class="keyword">int</span> i=rand()%len;</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">while</span>(i&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        x=rand()%len;</span><br><span class="line">        <span class="keyword">while</span>(x&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            x--;</span><br><span class="line">        &#125;</span><br><span class="line">        i--;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">philosopher</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    num=*(<span class="keyword">int</span> *)arg;</span><br><span class="line">    <span class="keyword">int</span> left=num;<span class="comment">//左筷子的编号和哲学家编号相同</span></span><br><span class="line">    <span class="keyword">int</span> right=(num+<span class="number">1</span>)%N;<span class="comment">//右筷子的编号</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(num%<span class="number">2</span>==<span class="number">0</span>)<span class="comment">//num为偶数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n-----Philosopher %d is thinking.-----\n"</span>,num);</span><br><span class="line">            <span class="built_in">delay</span>(<span class="number">2000</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n-----Philosopher %d is hungry now.-----\n"</span>,num);</span><br><span class="line">            sem_wait(&amp;chopstick[right]);<span class="comment">//申请右边的筷子</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n***Philosopher %d picking up the NO.%d choptick.***\n"</span>,num,right);</span><br><span class="line">            sem_wait(&amp;chopstick[left]);<span class="comment">//申请左边的筷子，互斥锁保证原子操作</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n***Philosopher %d picking up the NO.%d choptick.***\n"</span>,num,left);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n-----Philosopher %d is thinking.-----\n"</span>,num);</span><br><span class="line">            <span class="built_in">delay</span>(<span class="number">2000</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n-----Philosopher %d is hungry now.-----\n"</span>,num);</span><br><span class="line">            sem_wait(&amp;chopstick[left]);<span class="comment">//申请左边的筷子</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n***Philosopher %d picking up the NO.%d choptick.***\n"</span>,num,left);</span><br><span class="line">            sem_wait(&amp;chopstick[right]);<span class="comment">//申请右边的筷子</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n***Philosopher %d picking up the NO.%d choptick.***\n"</span>,num,right);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n***---Philosopher %d is eating.---***\n"</span>,num);<span class="comment">//开始进食</span></span><br><span class="line">        <span class="built_in">delay</span>(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        sem_post(&amp;chopstick[left]);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n***Philosopher %d picking down the NO.%d choptick.***\n"</span>,num,left);<span class="comment">//放下左边筷子</span></span><br><span class="line">        sem_post(&amp;chopstick[right]);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n***Philosopher %d picking down the NO.%d choptick.***\n"</span>,num,right);<span class="comment">//放下右边筷子</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    srand(time(<span class="literal">NULL</span>));</span><br><span class="line">    <span class="keyword">pthread_t</span> philo[N];</span><br><span class="line">    <span class="comment">//初始化信号量</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sem_init(&amp;chopstick[i],<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//创建线程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_create(&amp;philo[i],<span class="literal">NULL</span>,philosopher,&amp;philosophers[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//挂起线程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_join(philo[i],<span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//摧毁信号量</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sem_destroy(&amp;chopstick[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/07/02/GtucnQOj2LVIFTf.png" alt="哲学家就餐问题运行结果.png"></p>
+<p>从实验结果截图中能看到，哲学家3先拿起左筷子再拿起右筷子;哲学家4先拿起右筷子再拿起左筷子。</p>
+<p>当哲学家3拿起左（4号）筷子时，该筷子正在被哲学家4使用，只有当哲学家4完成就餐后放下（4号）筷子后，哲学家3才拿起左筷子进行就餐。</p>
+<p>从而通过非对称方案避免了死锁的发生。</p>
+</div><div class="tags"><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><i class="fa fa-tag"></i>操作系统</a></div><div class="post-nav"><a class="next" href="/2020/07/02/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/%E4%B8%80%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/">数据的预处理（一）</a></div><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == 'true' ? true : false;
+var verify = 'false' == 'true' ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'FnCDK0bbL7ryORjnC2SjPwDl-gzGzoHsz',
+  appKey:'GOqbpUCSSPTsiAOEF814bIBb',
+  placeholder:'',
+  avatar:'mm',
+  guest_info:guest_info,
+  pageSize:'10'
+})
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yoursite.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/R/" style="font-size: 15px;">R</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 15px;">学习笔记</a> <a href="/tags/lua%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" style="font-size: 15px;">lua基本语法</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 15px;">数据结构</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;">操作系统</a> <a href="/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 15px;">数学建模</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" style="font-size: 15px;">数据挖掘</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/07/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">进程管理</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/02/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/%E4%B8%80%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/">数据的预处理（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/02/R%E8%AF%AD%E8%A8%80/R%E5%8C%85/">R语言</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E6%91%B8%E9%B1%BC%E6%90%9E%E5%BB%BA%E6%A8%A1/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E5%AF%B9%E5%8F%98%E5%8C%96%E8%BF%9B%E8%A1%8C%E5%BB%BA%E6%A8%A1/">第一章 对变化进行建模</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/27/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E7%9A%84%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/3.Lua%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E4%B8%89/">Lua语言入门三</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/26/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E7%9A%84%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/2.Lua%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E4%BA%8C/">Lua语言入门二</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/25/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E7%9A%84%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/1.lua%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E4%B8%80/">Lua语言入门一</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84mooc/4.1%20%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">4.1 二叉搜索树</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84mooc/3.4%20%E5%88%A4%E6%96%AD%E4%BA%8C%E5%8F%89%E6%A0%91%E6%98%AF%E5%90%A6%E5%90%8C%E6%9E%84/">3.4 判断二叉树是否同构</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84mooc/3.3%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/">3.3 二叉树的遍历</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Mr.Iodin.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js" successtext="复制成功!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
