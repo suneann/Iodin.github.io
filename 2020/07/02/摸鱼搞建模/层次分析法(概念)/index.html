@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>评价类模型（一）—— 层次分析法（理论） | Mr.Iodin</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 4.2.1"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">评价类模型（一）—— 层次分析法（理论）</h1><a id="logo" href="/.">Mr.Iodin</a><p class="description">坠落苹果的两面：极端智慧与极致想象.</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">评价类模型（一）—— 层次分析法（理论）</h1><div class="post-meta">2020-07-02</div><a class="disqus-comment-count" href="/2020/07/02/%E6%91%B8%E9%B1%BC%E6%90%9E%E5%BB%BA%E6%A8%A1/%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95(%E6%A6%82%E5%BF%B5)/#vcomment"><span class="valine-comment-count" data-xid="/2020/07/02/%E6%91%B8%E9%B1%BC%E6%90%9E%E5%BB%BA%E6%A8%A1/%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95(%E6%A6%82%E5%BF%B5)/"></span><span> 条评论</span></a><div class="post-content"><h1 id="评价类问题"><a href="#评价类问题" class="headerlink" title="评价类问题"></a>评价类问题</h1><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>多种方案择优。</p>
+<h4 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h4><p>解决评价类问题，须考虑以下三个问题：</p>
+<p>① 评价目的是什么        </p>
+<p>%题目给出</p>
+<p>② 为达到这种目的有哪几种方案    </p>
+<p>%题目给出</p>
+<p>③ 评价准则和指标是什么*（ 根据什么来评价好坏 ？）    </p>
+<p>%需要根据题目中的背景材料、常识以及网上收集到的参考资料进行结合，从而筛选最合适的指标</p>
+<h5 id="最基本的打分法"><a href="#最基本的打分法" class="headerlink" title="最基本的打分法"></a>最基本的打分法</h5><p><img src="https://i.loli.net/2020/03/28/dx8uZzbkTLhUFlo.png" alt="评价类问题.打分表.png"></p>
+<p><strong>同颜色的单元格和为1，它们表示针对某一因素所占的权值</strong></p>
+<h3 id="层次分析法"><a href="#层次分析法" class="headerlink" title="层次分析法"></a>层次分析法</h3><p>​    The analytic hierarchy process，简称AHP。</p>
+<p>​    解决关于权值的确定问题*</p>
+<blockquote>
+<p>​    在确定影响因素的诸因子在该因素中所占比重时，遇到的主要困难是这些比重常常不易定量化。此外，当影响某因素的因子较多时，直接考虑各因子对该因素有多大程度影响时，常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据，甚至有可能提出一组隐含矛盾的数据。</p>
+<p>​                                                                                                                                    ——《数学建模算法与运用》</p>
+</blockquote>
+<p>​    问题：一次性考虑多个指标间关系，往往考虑不周。</p>
+<p>​    解决方法：两个两个指标进行比较，最终经过两两比较结果。（权重分析法的基本思想）</p>
+<h5 id="标度的引入"><a href="#标度的引入" class="headerlink" title="标度的引入"></a>标度的引入</h5><p>例如：</p>
+<table>
+<thead>
+<tr>
+<th>标度</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>表示两个因素相比，具有相同的重要性</td>
+</tr>
+<tr>
+<td>3</td>
+<td>表示两个因素相比，一个因素比另一个因素   <strong>稍微</strong>  重要</td>
+</tr>
+<tr>
+<td>5</td>
+<td>表示两个因素相比，一个因素比另一个因素   <strong>明显</strong>  重要</td>
+</tr>
+<tr>
+<td>7</td>
+<td>表示两个因素相比，一个因素比另一个因素   <strong>强烈</strong>  重要</td>
+</tr>
+<tr>
+<td>9</td>
+<td>表示两个因素相比，一个因素比另一个因素   <strong>极端</strong>  重要</td>
+</tr>
+<tr>
+<td>2,4,6,8</td>
+<td>上列两个相邻判断中值（比如：2表示介于  <strong>稍微</strong>  与  <strong>明显</strong>  之间）</td>
+</tr>
+<tr>
+<td>倒数</td>
+<td>若方案A与B相比标度为3，则B与A相比的标度就为1/3</td>
+</tr>
+</tbody></table>
+<p><img src="https://i.loli.net/2020/03/28/qSLdyOMYzFPHD64.jpg" alt="评价类问题.层次分析权重分析表.jpg"></p>
+<p>​        实际情况下，层次分析法中的这张表需要交给‘专家’填的。*</p>
+<h5 id="层次分析表的表示（判断矩阵）"><a href="#层次分析表的表示（判断矩阵）" class="headerlink" title="层次分析表的表示（判断矩阵）"></a>层次分析表的表示（判断矩阵）</h5><p>得到完整的表格后，用<strong>矩阵</strong>的方式来表示表格。</p>
+<p>例如下面这张表：</p>
+<p><img src="https://i.loli.net/2020/03/28/KPaHZlV7mexcFWp.jpg" alt="评价类问题.层次分析法表格（满）.jpg"></p>
+<p>可得到5 × 5的方阵，这里记为A，对应元素记为a<sub>ij</sub></p>
+<p>这个方阵有以下特点：</p>
+<ul>
+<li><p>a<sub>ij</sub>表示的意义为，与指标j相比，i的重要程度，</p>
+</li>
+<li><p>当i=j时，两个指标相同，因此同等重要记为1，</p>
+</li>
+<li><p>a<sub>ij</sub>&gt;0且满足a<sub>ij</sub> × a<sub>ij</sub> =1（称这样的矩阵为<font color=skyblue>正互反矩阵</font>）</p>
+</li>
+</ul>
+<p>这样的矩阵在层次分析法中称为<font color="red">判断矩阵</font>。</p>
+<p>同样，方案间也可以列判断矩阵:</p>
+<p><img src="https://i.loli.net/2020/03/28/4KfoeFvnPlkcd95.png" alt="评价类问题.判断矩阵.png"></p>
+<h5 id="一致矩阵的特点及定义"><a href="#一致矩阵的特点及定义" class="headerlink" title="一致矩阵的特点及定义"></a>一致矩阵的特点及定义</h5><p>当然，判断矩阵中可能会出现一个这样的bug：</p>
+<p><img src="https://i.loli.net/2020/03/28/lCmb6kTEJhwefKx.jpg" alt="评价类问题.层次分析法中的一个小bug.jpg"></p>
+<p>为了避免这样的bug产生，于是对判断矩阵进行如下定义：</p>
+<p>​                a<sub>ij</sub>=i的重要程度/j的重要程度    a<sub>jk</sub>=j的重要程度/k的重要程度    </p>
+<p>​                                    a<sub>ik</sub>=i的重要程度/k的重要程度=  a<sub>ij </sub> ×  a<sub>jk</sub></p>
+<p><strong>特点：</strong></p>
+<ul>
+<li><p>各行（各列）之间成倍数关系。</p>
+</li>
+<li><p>a<sub>ik</sub>=  a<sub>ij </sub> ×  a<sub>jk</sub></p>
+</li>
+</ul>
+<p><strong>现在，给一致矩阵下定义：</strong></p>
+<ul>
+<li>若矩阵中每个元素a<sub>ij </sub>＞0且满足a<sub>ij </sub> ×  a<sub>ji</sub>=1，则称为正互反矩阵。</li>
+<li>在层次分析法中，所构造的矩阵均为正互反矩阵。</li>
+<li>若正互反矩阵满足a<sub>ik</sub>=  a<sub>ij </sub> ×  a<sub>jk</sub>。</li>
+</ul>
+<h5 id="一致性检验概念引入"><a href="#一致性检验概念引入" class="headerlink" title="一致性检验概念引入"></a>一致性检验概念引入</h5><p>​    实际情况下，绝对的一致往往是不现实的，那么我们需要把不一致现象控制在一定程度。所以在使用判断矩阵求权重前，必须检查一致性。若矛盾过大的话，这个判断矩阵就失效了。</p>
+<p>检验原理：</p>
+<p>​    检验构造的判断矩阵和一致矩阵是否有太大差别。</p>
+<p>推导：</p>
+<p><img src="https://i.loli.net/2020/03/28/itOTkPa8pzcsqg5.png" alt="评价类问题.判断矩阵的一致性推导.png"></p>
+<p>引理：</p>
+<p>​    n阶正互反矩阵A为一致矩阵时当且仅当最大特征值为λ<sub>max</sub>=n.</p>
+<p>​    且当正互反矩阵A非一致性时,一定满足λ<sub>max</sub>＞n.</p>
+<p>判断矩阵越不一致时,最大特征值与n相差就越大。</p>
+<p>#####　一致性检验步骤</p>
+<p>第一步</p>
+<p>​    计算一致性指标ＣＩ</p>
+<p>​                                        ＣＩ＝（　λ<sub>max</sub>－ｎ　）／（ｎ－１）</p>
+<p>第二步</p>
+<p>​    查找对应平均一致性指标ＲＩ</p>
+<p>​    RI的值是用随机的方法构造500个样本矩阵：随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大的特征根的平均值λ‘<sub>max</sub>，并定义</p>
+<p>​                                          RＩ＝（　λ’<sub>max</sub>－ｎ　）／（ｎ－１）</p>
+<p>第三步</p>
+<p>​    计算一致性比例ＣＲ</p>
+<p>​                                            ＣＲ＝    ＣＩ／ＲＩ</p>
+<p><strong>ＣＲ表示相差程度，若ＣＲ＜０.１，则可认为判断矩阵一致性可以接受；否则需要对矩阵进行修正。</strong>（0.1是由多次蒙特卡罗模拟得到的最佳方案。)</p>
+<p><img src="https://i.loli.net/2020/03/28/bZrSN2KfYEd4cgI.png" alt="评价类问题.一致性检验步骤.png"></p>
+<h5 id="一致性矩阵推算出权重"><a href="#一致性矩阵推算出权重" class="headerlink" title="一致性矩阵推算出权重"></a>一致性矩阵推算出权重</h5><ul>
+<li><p>方法一：算术平均法求权重</p>
+<ul>
+<li><p>第一步</p>
+<p>​    将判断矩阵进行归一化（每个元素除以其所在列的和）。</p>
+</li>
+<li><p>第二步</p>
+<p>​    将归一化的各列相加（按行求和），再除以n得到权重向量。</p>
+</li>
+<li><p>数学符号表示</p>
+<p><img src="https://i.loli.net/2020/03/28/GdzVyuHiPCAcl7t.jpg" alt="评价类问题.求权重方法一.jpg"></p>
+</li>
+</ul>
+</li>
+<li><p>方法二：几何平均法</p>
+<p><img src="https://i.loli.net/2020/03/28/sm21DBqunLJr9Ho.jpg" alt="评价类问题.方法二几何.jpg"></p>
+</li>
+<li><p>方法三：特征值求权重**</p>
+<p>用最大特征值对应的特征向量（就是第一列的元素）代表它的权重。</p>
+<ul>
+<li><p>第一步</p>
+<p>​    求出矩阵Ａ的最大特征值以及其对应的特征向量</p>
+</li>
+<li><p>第二步</p>
+<p>​    对求出的特征向量进行归一化处理得到权重</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>第一步（画出层次分析法结构图）：</p>
+<p>评价类问题首先得想到一下三个问题：</p>
+<p>目标；方案；准则；</p>
+<p><img src="https://i.loli.net/2020/03/03/HnNdTopDrjEZl4g.png" alt="评价类问题.层次分析法结构图.png"></p>
+<p>若用到层次分析法，则一定要将图放在论文中。</p>
+<p>第二步（构造判断矩阵）：</p>
+<p>对于同一层次的个元素关于上一层次中某一准则的重要性进行两两比较</p>
+<p><img src="https://i.loli.net/2020/03/03/uDRNSZvBFIhWjOi.png" alt="评价类问题.判断矩阵.png"></p>
+<p>这个判断矩阵命名为O-C</p>
+<p>第三步（由判断矩阵计算被比较元素对应准则的相对权重，并进行一致性检验）：</p>
+<p>三种方法计算权重：1）算术平均法；2）几何平均法；3）特征值法；</p>
+<p>为了保证结果的稳健性，需要用三个方法分别求出权重。</p>
+<p><img src="https://i.loli.net/2020/07/02/VdozetCg56pJZD2.jpg" alt="一致性检验步骤.jpg"></p>
+<h5 id="层次分析法的局限性"><a href="#层次分析法的局限性" class="headerlink" title="层次分析法的局限性"></a>层次分析法的局限性</h5><p>1）.评价的决策层不能太多，太多的话n很大，判断矩阵和决策性矩阵的差距会很大。</p>
+<p>2）.如果决策层中指标的数据是已知的，那么如何利用这些数据使得评价更准确呢。</p>
+<h5 id="代码讲解-放另一篇里"><a href="#代码讲解-放另一篇里" class="headerlink" title="代码讲解(放另一篇里)"></a>代码讲解(放另一篇里)</h5></div><div class="tags"><a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fa fa-tag"></i>学习笔记</a><a href="/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fa fa-tag"></i>数学建模</a></div><div class="post-nav"><a class="pre" href="/2020/07/02/%E6%91%B8%E9%B1%BC%E6%90%9E%E5%BB%BA%E6%A8%A1/%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95%EF%BC%88%E4%BB%A3%E7%A0%81%EF%BC%89/">评价类模型（一）—— 层次分析法（模板）</a><a class="next" href="/2020/07/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">进程管理</a></div><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == 'true' ? true : false;
+var verify = 'false' == 'true' ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'FnCDK0bbL7ryORjnC2SjPwDl-gzGzoHsz',
+  appKey:'GOqbpUCSSPTsiAOEF814bIBb',
+  placeholder:'',
+  avatar:'mm',
+  guest_info:guest_info,
+  pageSize:'10'
+})
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yoursite.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/R/" style="font-size: 15px;">R</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 15px;">学习笔记</a> <a href="/tags/lua%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" style="font-size: 15px;">lua基本语法</a> <a href="/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 15px;">数学建模</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;">操作系统</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 15px;">数据结构</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" style="font-size: 15px;">数据挖掘</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/07/02/%E6%91%B8%E9%B1%BC%E6%90%9E%E5%BB%BA%E6%A8%A1/%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95%EF%BC%88%E4%BB%A3%E7%A0%81%EF%BC%89/">评价类模型（一）—— 层次分析法（模板）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/02/%E6%91%B8%E9%B1%BC%E6%90%9E%E5%BB%BA%E6%A8%A1/%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95(%E6%A6%82%E5%BF%B5)/">评价类模型（一）—— 层次分析法（理论）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">进程管理</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/02/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/%E4%B8%80%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/">数据的预处理（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/02/R%E8%AF%AD%E8%A8%80/R%E5%8C%85/">R语言</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E6%91%B8%E9%B1%BC%E6%90%9E%E5%BB%BA%E6%A8%A1/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E5%AF%B9%E5%8F%98%E5%8C%96%E8%BF%9B%E8%A1%8C%E5%BB%BA%E6%A8%A1/">对变化进行建模（一）——差分方程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/27/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E7%9A%84%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/3.Lua%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E4%B8%89/">Lua语言入门三</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/26/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E7%9A%84%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/2.Lua%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E4%BA%8C/">Lua语言入门二</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/25/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E7%9A%84%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/1.lua%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E4%B8%80/">Lua语言入门一</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84mooc/4.1%20%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">4.1 二叉搜索树</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Mr.Iodin.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js" successtext="复制成功!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
