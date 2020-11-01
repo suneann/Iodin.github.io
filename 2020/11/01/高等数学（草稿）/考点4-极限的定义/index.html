@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>考点4 极限的定义 | Mr.Iodin</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 4.2.1"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">考点4 极限的定义</h1><a id="logo" href="/.">Mr.Iodin</a><p class="description">坠落苹果的两面：极端智慧与极致想象.</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">考点4 极限的定义</h1><div class="post-meta">2020-11-01</div><a class="disqus-comment-count" href="/2020/11/01/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%EF%BC%88%E8%8D%89%E7%A8%BF%EF%BC%89/%E8%80%83%E7%82%B94-%E6%9E%81%E9%99%90%E7%9A%84%E5%AE%9A%E4%B9%89/#vcomment"><span class="valine-comment-count" data-xid="/2020/11/01/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%EF%BC%88%E8%8D%89%E7%A8%BF%EF%BC%89/%E8%80%83%E7%82%B94-%E6%9E%81%E9%99%90%E7%9A%84%E5%AE%9A%E4%B9%89/"></span><span> 条评论</span></a><div class="post-content"><h3 id="0-知识点"><a href="#0-知识点" class="headerlink" title="0.知识点"></a>0.知识点</h3><ul>
+<li>数列极限<ul>
+<li>定义：对极限：ε、N、a的理解；</li>
+<li>对数列子列的定义 ——&gt; 原数列存在极限 推导出 子列存在极限，反之不成立。（可以由子列极限推导出原数列极限，一般需要讨论所有不相交子列的情况，比如奇偶）。注：子列元素无限多；</li>
+<li>扩展：不等式的放缩；</li>
+</ul>
+</li>
+<li>函数极限<ul>
+<li>基本定义。某点是否存在极限跟某点是否有定义无关；</li>
+<li>单测极限；</li>
+<li>三种需要考虑左右极限的情况。</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-笔记"><a href="#1-笔记" class="headerlink" title="1.笔记"></a>1.笔记</h3><p><img src="https://i.loli.net/2020/11/01/AJz31nBjTHIg57u.jpg" alt="1.jpg"></p>
+<h3 id="2-总结："><a href="#2-总结：" class="headerlink" title="2.总结："></a>2.总结：</h3><p>1.关于对极限的理解：</p>
+<p>数列极限</p>
+<ul>
+<li>数列极限的定义就是“无限接近”，这是由两个任意小值ε和N决定的，ε为“是否无限接近”的一个标准，N则为“能否无限接近”的一个分界点，当n到达N这个分界点，“无限接近”才可能发生。</li>
+<li>N取值是由ε决定的，ε越小说明条件越“苛刻”，相应的N决定的“无限接近边界”也越小。</li>
+</ul>
+<p>函数极限</p>
+<ul>
+<li>对于连续的函数来说，极限也是无限接近。</li>
+<li>但一个函数在某一点是否有极限跟该点是否有定义无关，于是就可以将某一点处的左右极限分开讨论。</li>
+</ul>
+<p>2.里边讨论的数列极限跟函数极限的差别主要的在两方面：①一个是单向一个为多向；②一个离散一个连续</p>
+<p>那么数列里谈到的子列极限与原序列极限间的关系，跟函数单侧极限是不是有什么关系.(?)</p>
+<p>3.对于我这种记性差的人，基本概念还是要抄一抄、当做记录。（但这样效率是的真低</p>
+</div><div class="tags"><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%EF%BC%88%E8%8D%89%E7%A8%BF%EF%BC%89/"><i class="fa fa-tag"></i>高等数学（草稿）</a><a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fa fa-tag"></i>学习笔记</a></div><div class="post-nav"><a class="next" href="/2020/11/01/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%EF%BC%88%E8%8D%89%E7%A8%BF%EF%BC%89/%E8%80%83%E7%82%B91%E8%80%83%E7%82%B93%EF%BC%88%E8%8D%89%E7%A8%BF%EF%BC%89/">考点1~考点3（草稿）</a></div><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == 'true' ? true : false;
+var verify = 'false' == 'true' ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'FnCDK0bbL7ryORjnC2SjPwDl-gzGzoHsz',
+  appKey:'GOqbpUCSSPTsiAOEF814bIBb',
+  placeholder:'',
+  avatar:'mm',
+  guest_info:guest_info,
+  pageSize:'10'
+})
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yoursite.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%EF%BC%88%E8%8D%89%E7%A8%BF%EF%BC%89/" style="font-size: 15px;">高等数学（草稿）</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 15px;">学习笔记</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/11/01/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%EF%BC%88%E8%8D%89%E7%A8%BF%EF%BC%89/%E8%80%83%E7%82%B94-%E6%9E%81%E9%99%90%E7%9A%84%E5%AE%9A%E4%B9%89/">考点4 极限的定义</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/11/01/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%EF%BC%88%E8%8D%89%E7%A8%BF%EF%BC%89/%E8%80%83%E7%82%B91%E8%80%83%E7%82%B93%EF%BC%88%E8%8D%89%E7%A8%BF%EF%BC%89/">考点1~考点3（草稿）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/15/%E6%AF%92%E5%A5%B6%E4%B8%80%E5%8F%A3/">找到了盼头。</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Mr.Iodin.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js" successtext="复制成功!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
